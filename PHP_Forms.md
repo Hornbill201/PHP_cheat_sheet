@@ -139,7 +139,7 @@ The form code should look like this:
 
 The htmlspecialchars() function converts special characters to HTML entities. Now if the user tries to exploit the PHP_SELF variable, it will result in the following output:
 
-```php+HTML
+```HTML
 <form method="post" action="test_form.php/&quot;&gt;&lt;script&gt;alert('hacked')&lt;/script&gt;">
 ```
 
@@ -170,7 +170,7 @@ We will name the function test_input().
 
 Now, we can check each $_POST variable with the test_input() function, and the script looks like this:
 
-```php+HTML
+```php
 <!DOCTYPE HTML>  
 <html>
 <head>
