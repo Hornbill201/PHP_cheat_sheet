@@ -4,7 +4,7 @@
 
 The example below displays a simple HTML form with two input fields and a submit button:
 
-```php+HTML
+```HTML
 <html>
 <body>
 
@@ -22,7 +22,7 @@ When the user fills out the form above and clicks the submit button, the form da
 
 To display the submitted data you could simply echo all the variables. The "welcome.php" looks like this:
 
-```php+HTML
+```php
 <html>
 <body>
 
