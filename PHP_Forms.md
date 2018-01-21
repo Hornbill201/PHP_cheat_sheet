@@ -253,8 +253,8 @@ In the previous chapter, all input fields were optional.
 
 In the following code we have added some new variables: `$nameErr`, `$emailErr`, `$genderErr`, and `$websiteErr`. These error variables will hold error messages for the required fields. We have also added an if else statement for each `$_POST` variable. This checks if the `$_POST` variable is empty (with the PHP empty() function). If it is empty, an error message is stored in the different error variables, and if it is not empty, it sends the user input data through the test_input() function:
 
-```HTML
-<!DOCTYPE HTML>  
+```php
+<!DOCTYPE HTML>  
 <html>
 <head>
 <style>
@@ -351,7 +351,7 @@ echo $gender;
 
 The code below shows a simple way to check if the name field only contains letters and whitespace. If the value of the name field is not valid, then store an error message:
 
-```php+HTML
+```php
 $name = test_input($_POST["name"]);
 if (!preg_match("/^[a-zA-Z ]*$/",$name)) {
   $nameErr = "Only letters and white space allowed"; 
@@ -364,7 +364,7 @@ The easiest and safest way to check whether an email address is well-formed is t
 
 In the code below, if the e-mail address is not well-formed, then store an error message:
 
-```php+HTML
+```php
 $email = test_input($_POST["email"]);
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
   $emailErr = "Invalid email format"; 
@@ -375,7 +375,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
 The code below shows a way to check if a URL address syntax is valid (this regular expression also allows dashes in the URL). If the URL address syntax is not valid, then store an error message:
 
-```php+HTML
+```php
 $website = test_input($_POST["website"]);
 if (!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",$website)) {
   $websiteErr = "Invalid URL"; 
@@ -386,7 +386,7 @@ if (!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-
 
 Now, the script looks like this:
 
-```php+HTML
+```php
 <!DOCTYPE HTML>  
 <html>
 <head>
@@ -498,7 +498,7 @@ To show the values in the input fields after the user hits the submit button, we
 
 Then, we also need to show which radio button that was checked. For this, we must manipulate the checked attribute (not the value attribute for radio buttons):
 
-```php+HTML
+```php
 <!DOCTYPE HTML>  
 <html>
 <head>
