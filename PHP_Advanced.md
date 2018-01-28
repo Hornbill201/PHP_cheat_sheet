@@ -694,3 +694,887 @@ if ($uploadOk == 0) {
 ## Complete PHP Filesystem Reference
 
 For a complete reference of filesystem functions, go to our complete [PHP Filesystem Reference](https://www.w3schools.com/php/php_ref_filesystem.asp).
+
+## Create Cookies With PHP
+
+A cookie is created with the setcookie() function.
+
+### Syntax
+
+```php
+setcookie(name, value, expire, path, domain, secure, httponly);
+```
+
+Only the name parameter is required. All other parameters are optional.
+
+## PHP Create/Retrieve a Cookie
+
+The following example creates a cookie named "user" with the value "John Doe". The cookie will expire after 30 days (86400 * 30). The "/" means that the cookie is available in entire website (otherwise, select the directory you prefer).
+
+We then retrieve the value of the cookie "user" (using the global variable $_COOKIE). We also use the isset() function to find out if the cookie is set:
+
+```php
+<?php
+$cookie_name = "user";
+$cookie_value = "John Doe";
+setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
+?>
+<html>
+<body>
+
+<?php
+if(!isset($_COOKIE[$cookie_name])) {
+    echo "Cookie named '" . $cookie_name . "' is not set!";
+} else {
+    echo "Cookie '" . $cookie_name . "' is set!<br>";
+    echo "Value is: " . $_COOKIE[$cookie_name];
+}
+?>
+
+</body>
+</html>
+```
+
+## Modify a Cookie Value
+
+To modify a cookie, just set (again) the cookie using the setcookie() function:
+
+```php
+<?php
+$cookie_name = "user";
+$cookie_value = "Alex Porter";
+setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
+?>
+<html>
+<body>
+
+<?php
+if(!isset($_COOKIE[$cookie_name])) {
+    echo "Cookie named '" . $cookie_name . "' is not set!";
+} else {
+    echo "Cookie '" . $cookie_name . "' is set!<br>";
+    echo "Value is: " . $_COOKIE[$cookie_name];
+}
+?>
+
+</body>
+</html>
+```
+
+## Delete a Cookie
+
+To delete a cookie, use the setcookie() function with an expiration date in the past:
+
+```php
+<?php
+// set the expiration date to one hour ago
+setcookie("user", "", time() - 3600);
+?>
+<html>
+<body>
+
+<?php
+echo "Cookie 'user' is deleted.";
+?>
+
+</body>
+</html>
+```
+
+## Check if Cookies are Enabled
+
+The following example creates a small script that checks whether cookies are enabled. First, try to create a test cookie with the setcookie() function, then count the $_COOKIE array variable:
+
+```php
+<?php
+setcookie("test_cookie", "test", time() + 3600, '/');
+?>
+<html>
+<body>
+
+<?php
+if(count($_COOKIE) > 0) {
+    echo "Cookies are enabled.";
+} else {
+    echo "Cookies are disabled.";
+}
+?>
+
+</body>
+</html>
+```
+
+## What is a PHP Session?
+
+When you work with an application, you open it, do some changes, and then you close it. This is much like a Session. The computer knows who you are. It knows when you start the application and when you end. But on the internet there is one problem: the web server does not know who you are or what you do, because the HTTP address doesn't maintain state.
+
+Session variables solve this problem by storing user information to be used across multiple pages (e.g. username, favorite color, etc). By default, session variables last until the user closes the browser.
+
+So; Session variables hold information about one single user, and are available to all pages in one application.
+
+**Tip:** If you need a permanent storage, you may want to store the data in a [database](https://www.w3schools.com/php/php_mysql_intro.asp).
+
+## Start a PHP Session
+
+A session is started with the session_start() function.
+
+Session variables are set with the PHP global variable: $_SESSION.
+
+Now, let's create a new page called "demo_session1.php". In this page, we start a new PHP session and set some session variables:
+
+```php
+<?php
+// Start the session
+session_start();
+?>
+<!DOCTYPE html>
+<html>
+<body>
+
+<?php
+// Set session variables
+$_SESSION["favcolor"] = "green";
+$_SESSION["favanimal"] = "cat";
+echo "Session variables are set.";
+?>
+
+</body>
+</html>
+```
+
+## Get PHP Session Variable Values
+
+Next, we create another page called "demo_session2.php". From this page, we will access the session information we set on the first page ("demo_session1.php").
+
+Notice that session variables are not passed individually to each new page, instead they are retrieved from the session we open at the beginning of each page (session_start()).
+
+Also notice that all session variable values are stored in the global $_SESSION variable:
+
+```php
+<?php
+session_start();
+?>
+<!DOCTYPE html>
+<html>
+<body>
+
+<?php
+// Echo session variables that were set on previous page
+echo "Favorite color is " . $_SESSION["favcolor"] . ".<br>";
+echo "Favorite animal is " . $_SESSION["favanimal"] . ".";
+?>
+
+</body>
+</html>
+```
+
+## Destroy a PHP Session
+
+To remove all global session variables and destroy the session, use session_unset() and session_destroy():
+
+```php
+<?php
+session_start();
+?>
+<!DOCTYPE html>
+<html>
+<body>
+
+<?php
+// remove all session variables
+session_unset(); 
+
+// destroy the session 
+session_destroy(); 
+?>
+
+</body>
+</html>
+```
+
+## The PHP Filter Extension
+
+PHP filters are used to validate and sanitize external input.
+
+The PHP filter extension has many of the functions needed for checking user input, and is designed to make data validation easier and quicker.
+
+The filter_list() function can be used to list what the PHP filter extension offers:
+
+```php
+<table>
+  <tr>
+    <td>Filter Name</td>
+    <td>Filter ID</td>
+  </tr>
+  <?php
+  foreach (filter_list() as $id =>$filter) {
+      echo '<tr><td>' . $filter . '</td><td>' . filter_id($filter) . '</td></tr>';
+  }
+  ?>
+</table>
+```
+
+## Why Use Filters?
+
+Many web applications receive external input. External input/data can be:
+
+- User input from a form
+- Cookies
+- Web services data
+- Server variables
+- Database query results
+
+**You should always validate external data!**Invalid submitted data can lead to security problems and break your webpage!
+By using PHP filters you can be sure your application gets the correct input!
+
+## PHP filter_var() Function
+
+The filter_var() function both validate and sanitize data.
+
+The filter_var() function filters a single variable with a specified filter. It takes two pieces of data:
+
+- The variable you want to check
+- The type of check to use
+
+## Sanitize a String
+
+The following example uses the filter_var() function to remove all HTML tags from a string:
+
+```php
+<?php
+$str = "<h1>Hello World!</h1>";
+$newstr = filter_var($str, FILTER_SANITIZE_STRING);
+echo $newstr;
+?>
+```
+
+## Validate an Integer
+
+The following example uses the filter_var() function to check if the variable $int is an integer. If $int is an integer, the output of the code below will be: "Integer is valid". If $int is not an integer, the output will be: "Integer is not valid":
+
+```php
+<?php
+$int = 100;
+
+if (!filter_var($int, FILTER_VALIDATE_INT) === false) {
+    echo("Integer is valid");
+} else {
+    echo("Integer is not valid");
+}
+?>
+```
+
+### Tip: filter_var() and Problem With 0
+
+In the example above, if $int was set to 0, the function above will return "Integer is not valid". To solve this problem, use the code below:
+
+```php
+<?php
+$int = 0;
+
+if (filter_var($int, FILTER_VALIDATE_INT) === 0 || !filter_var($int, FILTER_VALIDATE_INT) === false) {
+    echo("Integer is valid");
+} else {
+    echo("Integer is not valid");
+}
+?>
+```
+
+## Validate an IP Address
+
+```php
+if (!filter_var($ip, FILTER_VALIDATE_IP) === false) 
+  ....
+```
+
+## Sanitize and Validate an Email Address
+
+The following example uses the filter_var() function to first remove all illegal characters from the $email variable, then check if it is a valid email address:
+
+```php
+<?php
+$email = "john.doe@example.com";
+
+// Remove all illegal characters from email
+$email = filter_var($email, FILTER_SANITIZE_EMAIL);
+
+// Validate e-mail
+if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+    echo("$email is a valid email address");
+} else {
+    echo("$email is not a valid email address");
+}
+?>
+```
+
+## Sanitize and Validate a URL
+
+The following example uses the filter_var() function to first remove all illegal characters from a URL, then check if $url is a valid URL:
+
+```php
+<?php
+$url = "https://www.w3schools.com";
+
+// Remove all illegal characters from a url
+$url = filter_var($url, FILTER_SANITIZE_URL);
+
+// Validate url
+if (!filter_var($url, FILTER_VALIDATE_URL) === false) {
+    echo("$url is a valid URL");
+} else {
+    echo("$url is not a valid URL");
+}
+?>
+```
+
+## Complete PHP Filter Reference
+
+For a complete reference of all filter functions, go to our complete [PHP Filter Reference.](https://www.w3schools.com/php/php_ref_filter.asp) Check each filter to see what options and flags are available.
+
+The reference contains a brief description, and examples of use, for each function!
+
+## Validate an Integer Within a Range
+
+The following example uses the filter_var() function to check if a variable is both of type INT, and between 1 and 200:
+
+```php
+<?php
+$int = 122;
+$min = 1;
+$max = 200;
+
+if (filter_var($int, FILTER_VALIDATE_INT, array("options" => array("min_range"=>$min, "max_range"=>$max))) === false) {
+    echo("Variable value is not within the legal range");
+} else {
+    echo("Variable value is within the legal range");
+}
+?>
+```
+
+## Validate IPv6 Address
+
+The following example uses the filter_var() function to check if the variable $ip is a valid IPv6 address:
+
+```php
+<?php
+$ip = "2001:0db8:85a3:08d3:1319:8a2e:0370:7334";
+
+if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false) {
+    echo("$ip is a valid IPv6 address");
+} else {
+    echo("$ip is not a valid IPv6 address");
+}
+?>
+```
+
+## Validate URL - Must Contain QueryString
+
+The following example uses the filter_var() function to check if the variable $url is a URL with a querystring:
+
+```php
+<?php
+$url = "https://www.w3schools.com";
+
+if (!filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_QUERY_REQUIRED) === false) {
+    echo("$url is a valid URL");
+} else {
+    echo("$url is not a valid URL");
+}
+?
+```
+
+## Remove Characters With ASCII Value > 127
+
+The following example uses the filter_var() function to sanitize a string. It will both remove all HTML tags, and all characters with ASCII value > 127, from the string:
+
+```php
+<?php
+$str = "<h1>Hello WorldÆØÅ!</h1>";
+
+$newstr = filter_var($str, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+echo $newstr;
+?>
+```
+
+## PHP Error Handling
+
+When creating scripts and web applications, error handling is an important part. If your code lacks error checking code, your program may look very unprofessional and you may be open to security risks.
+
+This tutorial contains some of the most common error checking methods in PHP.
+
+We will show different error handling methods:
+
+- Simple "die()" statements
+- Custom errors and error triggers
+- Error reporting
+
+## Basic Error Handling: Using the die() function
+
+The first example shows a simple script that opens a text file:
+
+```
+<?php
+$file=fopen("welcome.txt","r");
+?>
+```
+
+To prevent the user from getting an error message like the one above, we test whether the file exist before we try to access it:
+
+```php
+<?php
+if(!file_exists("welcome.txt")) {
+  die("File not found");
+} else {
+  $file=fopen("welcome.txt","r");
+}
+?>
+```
+
+## Creating a Custom Error Handler
+
+Creating a custom error handler is quite simple. We simply create a special function that can be called when an error occurs in PHP.
+
+This function must be able to handle a minimum of two parameters (error level and error message) but can accept up to five parameters (optionally: file, line-number, and the error context):
+
+```php
+error_function(error_level,error_message,
+error_file,error_line,error_context)
+```
+
+| Parameter     | Description                              |
+| ------------- | ---------------------------------------- |
+| error_level   | Required. Specifies the error report level for the user-defined error. Must be a value number. See table below for possible error report levels |
+| error_message | Required. Specifies the error message for the user-defined error |
+| error_file    | Optional. Specifies the filename in which the error occurred |
+| error_line    | Optional. Specifies the line number in which the error occurred |
+| error_context | Optional. Specifies an array containing every variable, and their values, in use when the error occurred |
+
+## Error Report levels
+
+These error report levels are the different types of error the user-defined error handler can be used for:
+
+| Value | Constant            | Description                              |
+| ----- | ------------------- | ---------------------------------------- |
+| 2     | E_WARNING           | Non-fatal run-time errors. Execution of the script is not halted |
+| 8     | E_NOTICE            | Run-time notices. The script found something that might be an error, but could also happen when running a script normally |
+| 256   | E_USER_ERROR        | Fatal user-generated error. This is like an E_ERROR set by the programmer using the PHP function trigger_error() |
+| 512   | E_USER_WARNING      | Non-fatal user-generated warning. This is like an E_WARNING set by the programmer using the PHP function trigger_error() |
+| 1024  | E_USER_NOTICE       | User-generated notice. This is like an E_NOTICE set by the programmer using the PHP function trigger_error() |
+| 4096  | E_RECOVERABLE_ERROR | Catchable fatal error. This is like an E_ERROR but can be caught by a user defined handle (see also set_error_handler()) |
+| 8191  | E_ALL               | All errors and warnings (E_STRICT became a part of E_ALL in PHP 5.4) |
+
+## Set Error Handler
+
+The default error handler for PHP is the built in error handler. We are going to make the function above the default error handler for the duration of the script.
+
+It is possible to change the error handler to apply for only some errors, that way the script can handle different errors in different ways. However, in this example we are going to use our custom error handler for all errors:
+
+```php
+set_error_handler("customError");
+```
+
+Since we want our custom function to handle all errors, the set_error_handler() only needed one parameter, a second parameter could be added to specify an error level.
+
+```php
+<?php
+//error handler function
+function customError($errno, $errstr) {
+  echo "<b>Error:</b> [$errno] $errstr";
+}
+
+//set error handler
+set_error_handler("customError");
+
+//trigger error
+echo($test);
+?>
+```
+
+## Trigger an Error
+
+In a script where users can input data it is useful to trigger errors when an illegal input occurs. In PHP, this is done by the trigger_error() function.
+
+```php
+<?php
+$test=2;
+if ($test>=1) {
+  trigger_error("Value must be 1 or below");
+}
+?>
+```
+
+Possible error types:
+
+- E_USER_ERROR - Fatal user-generated run-time error. Errors that can not be recovered from. Execution of the script is halted
+- E_USER_WARNING - Non-fatal user-generated run-time warning. Execution of the script is not halted
+- E_USER_NOTICE - Default. User-generated run-time notice. The script found something that might be an error, but could also happen when running a script normally
+
+## Example
+
+In this example an E_USER_WARNING occurs if the "test" variable is bigger than "1". If an E_USER_WARNING occurs we will use our custom error handler and end the script:
+
+```php
+<?php
+//error handler function
+function customError($errno, $errstr) {
+  echo "<b>Error:</b> [$errno] $errstr<br>";
+  echo "Ending Script";
+  die();
+}
+
+//set error handler
+set_error_handler("customError",E_USER_WARNING);
+
+//trigger error
+$test=2;
+if ($test>=1) {
+  trigger_error("Value must be 1 or below",E_USER_WARNING);
+}
+?>
+```
+
+The output of the code above should be something like this:
+
+```
+Error: [512] Value must be 1 or below
+Ending Script
+```
+
+## Error Logging
+
+By default, PHP sends an error log to the server's logging system or a file, depending on how the error_log configuration is set in the php.ini file. By using the error_log() function you can send error logs to a specified file or a remote destination.
+
+Sending error messages to yourself by e-mail can be a good way of getting notified of specific errors.
+
+## Send an Error Message by E-Mail
+
+In the example below we will send an e-mail with an error message and end the script, if a specific error occurs:
+
+```php
+<?php
+//error handler function
+function customError($errno, $errstr) {
+  echo "<b>Error:</b> [$errno] $errstr<br>";
+  echo "Webmaster has been notified";
+  error_log("Error: [$errno] $errstr",1,
+  "someone@example.com","From: webmaster@example.com");
+}
+
+//set error handler
+set_error_handler("customError",E_USER_WARNING);
+
+//trigger error
+$test=2;
+if ($test>=1) {
+  trigger_error("Value must be 1 or below",E_USER_WARNING);
+}
+?>
+```
+
+The output of the code above should be something like this:
+
+```
+Error: [512] Value must be 1 or below
+Webmaster has been notified
+```
+
+And the mail received from the code above looks like this:
+
+```
+Error: [512] Value must be 1 or below
+```
+
+This should not be used with all errors. Regular errors should be logged on the server using the default PHP logging system.
+
+## What is an Exception
+
+With PHP 5 came a new object oriented way of dealing with errors.
+
+Exception handling is used to change the normal flow of the code execution if a specified error (exceptional) condition occurs. This condition is called an exception.
+This is what normally happens when an exception is triggered:
+
+- The current code state is saved
+- The code execution will switch to a predefined (custom) exception handler function
+- Depending on the situation, the handler may then resume the execution from the saved code state, terminate the script execution or continue the script from a different location in the code
+
+We will show different error handling methods:
+
+- Basic use of Exceptions
+- Creating a custom exception handler
+- Multiple exceptions
+- Re-throwing an exception
+- Setting a top level exception handler
+
+**Note:** Exceptions should only be used with error conditions, and should not be used to jump to another place in the code at a specified point.
+
+## Basic Use of Exceptions
+
+When an exception is thrown, the code following it will not be executed, and PHP will try to find the matching "catch" block.
+
+If an exception is not caught, a fatal error will be issued with an "Uncaught Exception" message.
+
+Lets try to throw an exception without catching it:
+
+```php
+<?php
+//create function with an exception
+function checkNum($number) {
+  if($number>1) {
+    throw new Exception("Value must be 1 or below");
+  }
+  return true;
+}
+
+//trigger exception
+checkNum(2);
+?>
+```
+
+The code above will get an error like this:
+
+```
+Fatal error: Uncaught exception 'Exception'
+with message 'Value must be 1 or below' in C:\webfolder\test.php:6
+Stack trace: #0 C:\webfolder\test.php(12):
+checkNum(28) #1 {main} thrown in C:\webfolder\test.php on line 6
+```
+
+## Try, throw and catch
+
+To avoid the error from the example above, we need to create the proper code to handle an exception.
+
+Proper exception code should include:
+
+1. Try - A function using an exception should be in a "try" block. If the exception does not trigger, the code will continue as normal. However if the exception triggers, an exception is "thrown"
+2. Throw - This is how you trigger an exception. Each "throw" must have at least one "catch"
+3. Catch - A "catch" block retrieves an exception and creates an object containing the exception information
+
+Lets try to trigger an exception with valid code:
+
+```php
+<?php
+//create function with an exception
+function checkNum($number) {
+  if($number>1) {
+    throw new Exception("Value must be 1 or below");
+  }
+  return true;
+}
+
+//trigger exception in a "try" block
+try {
+  checkNum(2);
+  //If the exception is thrown, this text will not be shown
+  echo 'If you see this, the number is 1 or below';
+}
+
+//catch exception
+catch(Exception $e) {
+  echo 'Message: ' .$e->getMessage();
+}
+?>
+```
+
+The code above will get an error like this:
+
+```
+Message: Value must be 1 or below
+```
+
+## Example explained:
+
+The code above throws an exception and catches it:
+
+1. The checkNum() function is created. It checks if a number is greater than 1. If it is, an exception is thrown
+2. The checkNum() function is called in a "try" block
+3. The exception within the checkNum() function is thrown
+4. The "catch" block retrieves the exception and creates an object ($e) containing the exception information
+5. The error message from the exception is echoed by calling $e->getMessage() from the exception object
+
+However, one way to get around the "every throw must have a catch" rule is to set a top level exception handler to handle errors that slip through.
+
+## Creating a Custom Exception Class
+
+To create a custom exception handler you must create a special class with functions that can be called when an exception occurs in PHP. The class must be an extension of the exception class.
+
+The custom exception class inherits the properties from PHP's exception class and you can add custom functions to it.
+
+Lets create an exception class:
+
+```php
+<?php
+class customException extends Exception {
+  public function errorMessage() {
+    //error message
+    $errorMsg = 'Error on line '.$this->getLine().' in '.$this->getFile()
+    .': <b>'.$this->getMessage().'</b> is not a valid E-Mail address';
+    return $errorMsg;
+  }
+}
+
+$email = "someone@example...com";
+
+try {
+  //check if
+  if(filter_var($email, FILTER_VALIDATE_EMAIL) === FALSE) {
+    //throw exception if email is not valid
+    throw new customException($email);
+  }
+}
+
+catch (customException $e) {
+  //display custom message
+  echo $e->errorMessage();
+}
+?>
+```
+
+## Example explained:
+
+The code above throws an exception and catches it with a custom exception class:
+
+1. The customException() class is created as an extension of the old exception class. This way it inherits all methods and properties from the old exception class
+2. The errorMessage() function is created. This function returns an error message if an e-mail address is invalid
+3. The $email variable is set to a string that is not a valid e-mail address
+4. The "try" block is executed and an exception is thrown since the e-mail address is invalid
+5. The "catch" block catches the exception and displays the error message
+
+## Multiple Exceptions
+
+It is possible for a script to use multiple exceptions to check for multiple conditions.
+
+It is possible to use several if..else blocks, a switch, or nest multiple exceptions. These exceptions can use different exception classes and return different error messages:
+
+```php
+<?php
+class customException extends Exception {
+  public function errorMessage() {
+    //error message
+    $errorMsg = 'Error on line '.$this->getLine().' in '.$this->getFile()
+    .': <b>'.$this->getMessage().'</b> is not a valid E-Mail address';
+    return $errorMsg;
+  }
+}
+
+$email = "someone@example.com";
+
+try {
+  //check if
+  if(filter_var($email, FILTER_VALIDATE_EMAIL) === FALSE) {
+    //throw exception if email is not valid
+    throw new customException($email);
+  }
+  //check for "example" in mail address
+  if(strpos($email, "example") !== FALSE) {
+    throw new Exception("$email is an example e-mail");
+  }
+}
+
+catch (customException $e) {
+  echo $e->errorMessage();
+}
+
+catch(Exception $e) {
+  echo $e->getMessage();
+}
+?>
+```
+
+## Example explained:
+
+The code above tests two conditions and throws an exception if any of the conditions are not met:
+
+1. The customException() class is created as an extension of the old exception class. This way it inherits all methods and properties from the old exception class
+2. The errorMessage() function is created. This function returns an error message if an e-mail address is invalid
+3. The $email variable is set to a string that is a valid e-mail address, but contains the string "example"
+4. The "try" block is executed and an exception is not thrown on the first condition
+5. The second condition triggers an exception since the e-mail contains the string "example"
+6. The "catch" block catches the exception and displays the correct error message
+
+If the exception thrown were of the class customException and there were no customException catch, only the base exception catch, the exception would be handled there.
+
+## Re-throwing Exceptions
+
+Sometimes, when an exception is thrown, you may wish to handle it differently than the standard way. It is possible to throw an exception a second time within a "catch" block.
+
+A script should hide system errors from users. System errors may be important for the coder, but are of no interest to the user. To make things easier for the user you can re-throw the exception with a user friendly message:
+
+```php
+<?php
+class customException extends Exception {
+  public function errorMessage() {
+    //error message
+    $errorMsg = $this->getMessage().' is not a valid E-Mail address.';
+    return $errorMsg;
+  }
+}
+
+$email = "someone@example.com";
+
+try {
+  try {
+    //check for "example" in mail address
+    if(strpos($email, "example") !== FALSE) {
+      //throw exception if email is not valid
+      throw new Exception($email);
+    }
+  }
+  catch(Exception $e) {
+    //re-throw exception
+    throw new customException($email);
+  }
+}
+
+catch (customException $e) {
+  //display custom message
+  echo $e->errorMessage();
+}
+?>
+```
+
+## Example explained:
+
+The code above tests if the email-address contains the string "example" in it, if it does, the exception is re-thrown:
+
+1. The customException() class is created as an extension of the old exception class. This way it inherits all methods and properties from the old exception class
+2. The errorMessage() function is created. This function returns an error message if an e-mail address is invalid
+3. The $email variable is set to a string that is a valid e-mail address, but contains the string "example"
+4. The "try" block contains another "try" block to make it possible to re-throw the exception
+5. The exception is triggered since the e-mail contains the string "example"
+6. The "catch" block catches the exception and re-throws a "customException"
+7. The "customException" is caught and displays an error message
+
+If the exception is not caught in its current "try" block, it will search for a catch block on "higher levels".
+
+## Set a Top Level Exception Handler
+
+The set_exception_handler() function sets a user-defined function to handle all uncaught exceptions:
+
+```php
+<?php
+function myException($exception) {
+  echo "<b>Exception:</b> " . $exception->getMessage();
+}
+
+set_exception_handler('myException');
+
+throw new Exception('Uncaught Exception occurred');
+?>
+```
+
+The output of the code above should be something like this:
+
+```
+Exception: Uncaught Exception occurred
+```
+
+n the code above there was no "catch" block. Instead, the top level exception handler triggered. This function should be used to catch uncaught exceptions.
+
+## Rules for exceptions
+
+- Code may be surrounded in a try block, to help catch potential exceptions
+- Each try block or "throw" must have at least one corresponding catch block
+- Multiple catch blocks can be used to catch different classes of exceptions
+- Exceptions can be thrown (or re-thrown) in a catch block within a try block
+
+A simple rule: If you throw something, you have to catch it.
